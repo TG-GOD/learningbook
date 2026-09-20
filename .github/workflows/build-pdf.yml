@@ -16,12 +16,14 @@ jobs:
 
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v3
+        continue-on-error: true       # 关键改动：只要编译出PDF，即使有小警告也继续往下走
         with:
           root_file: main.tex
           compiler: xelatex
           args: -file-line-error -interaction=nonstopmode
 
       - name: Upload PDF Artifact
+        if: always()                  # 关键改动：只要有 PDF 生成就立刻提供下载
         uses: actions/upload-artifact@v4
         with:
           name: Learning-Manual-PDF
